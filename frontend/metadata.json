@@ -1,0 +1,5 @@
+{
+  "name": "Gerenciador de Banca de Feira de Livro",
+  "description": "Um sistema completo para gerenciar vendas, produtos e finanças de uma banca em uma feira de livros. Interface simples, intuitiva e elegante para facilitar o dia a dia do vendedor.",
+  "requestFramePermissions": []
+}

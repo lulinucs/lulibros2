@@ -1,0 +1,34 @@
+# Arquivos de texto
+*.php text
+*.js text
+*.ts text
+*.tsx text
+*.json text
+*.md text
+*.html text
+*.css text
+*.env text
+
+# Arquivos binários
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+
+# Arquivos de configuração
+*.env linguist-language=Text
+*.log linguist-language=Text
+
+# Ignorar arquivos de build
+frontend/dist/
+api/vendor/
+node_modules/
+
+# Linguagem específica
+*.php linguist-language=PHP
+*.js linguist-language=JavaScript
+*.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
+*.json linguist-language=JSON

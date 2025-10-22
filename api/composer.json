@@ -1,0 +1,17 @@
+{
+    "name": "lulibros/backend",
+    "description": "Backend API para o sistema Lulibros",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lulibros\\": "src/"
+        }
+    },
+    "scripts": {
+        "start": "php -S localhost:8000 -t . index.php",
+        "dev": "php -S localhost:8000 -t . index.php"
+    }
+}
