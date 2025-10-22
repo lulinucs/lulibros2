@@ -7,7 +7,7 @@
 ### **Arquitetura Moderna**
 - **Backend PHP** com API REST robusta (substituindo Node.js)
 - **Frontend React** com TypeScript e Vite
-- **Banco MySQL** com suporte completo a acentos
+- **Banco MySQL** 
 - **Autenticação JWT** para segurança aprimorada
 
 ### **Controle de Usuários**
