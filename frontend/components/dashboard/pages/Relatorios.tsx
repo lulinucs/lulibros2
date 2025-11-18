@@ -435,6 +435,28 @@ const Relatorios: React.FC = () => {
         )}
       </div>
 
+      {/* Resumo por Forma de Pagamento - Só para aba de vendas */}
+      {abaAtiva === 'vendas' && resumo && resumo.formas_pagamento && resumo.formas_pagamento.length > 0 && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Resumo por Forma de Pagamento</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {resumo.formas_pagamento.map((forma, index) => (
+              <div key={index} className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <span className="text-2xl mr-2">{getFormaPagamentoIcon(forma.forma_pagamento)}</span>
+                    <span className="font-medium text-gray-900">{forma.forma_pagamento}</span>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-600">{forma.vendas} vendas</p>
+                    <p className="text-lg font-bold text-gray-900">{formatCurrency(forma.total)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Tabela de Dados - Só para aba de vendas */}
       {abaAtiva === 'vendas' && (
@@ -548,29 +570,6 @@ const Relatorios: React.FC = () => {
             </table>
           </div>
           )}
-        </div>
-      )}
-
-      {/* Resumo Financeiro - Só para aba financeiro */}
-      {abaAtiva === 'financeiro' && resumo && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Resumo por Forma de Pagamento</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {resumo.formas_pagamento.map((forma, index) => (
-              <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <span className="text-2xl mr-2">{getFormaPagamentoIcon(forma.forma_pagamento)}</span>
-                    <span className="font-medium text-gray-900">{forma.forma_pagamento}</span>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-600">{forma.vendas} vendas</p>
-                    <p className="text-lg font-bold text-gray-900">{formatCurrency(forma.total)}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       )}
 

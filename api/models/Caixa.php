@@ -317,21 +317,40 @@ class Caixa {
                 $caixa['total_registrado'] = round($caixa['dinheiro_registrado'] + $caixa['credito_registrado'] + 
                                            $caixa['debito_registrado'] + $caixa['pix_registrado'] + $caixa['outros_registrado'], 2);
                 
-                // Usar valores conferidos da tabela (já estão no SELECT)
-                $caixa['dinheiro_conferido'] = round((float)($caixa['dinheiro_conferido'] ?? 0), 2);
+                // Buscar movimentações do caixa ANTES de calcular dinheiro_conferido
+                $movimentacoes = $this->getMovimentacoesPorCaixa($caixa['id']);
+                $caixa['movimentacoes'] = $movimentacoes;
+                
+                // Calcular total_manual (soma das movimentações: entrada - saída)
+                $total_manual = 0;
+                foreach ($movimentacoes as $mov) {
+                    if ($mov['tipo'] === 'entrada') {
+                        $total_manual += (float)$mov['valor'];
+                    } else {
+                        $total_manual -= (float)$mov['valor'];
+                    }
+                }
+                $total_manual = round($total_manual, 2);
+                
+                // Calcular dinheiro_conferido: dinheiro_final - dinheiro_inicial - total_manual
+                // Só calcula se o caixa estiver fechado e tiver dinheiro_final
+                if ($caixa['status'] === 'fechado' && $caixa['dinheiro_final'] !== null) {
+                    $caixa['dinheiro_conferido'] = round($caixa['dinheiro_final'] - $caixa['dinheiro_inicial'] - $total_manual, 2);
+                } else {
+                    $caixa['dinheiro_conferido'] = 0;
+                }
+                
+                // Usar valores conferidos da tabela para outras formas de pagamento
                 $caixa['credito_conferido'] = round((float)($caixa['credito_conferido'] ?? 0), 2);
                 $caixa['debito_conferido'] = round((float)($caixa['debito_conferido'] ?? 0), 2);
                 $caixa['pix_conferido'] = round((float)($caixa['pix_conferido'] ?? 0), 2);
                 $caixa['outros_conferido'] = round((float)($caixa['outros_conferido'] ?? 0), 2);
                 
+                // Calcular total_conferido INCLUINDO dinheiro_conferido
                 $caixa['total_conferido'] = round($caixa['dinheiro_conferido'] + $caixa['credito_conferido'] + 
                                            $caixa['debito_conferido'] + $caixa['pix_conferido'] + $caixa['outros_conferido'], 2);
                 
                 $caixa['diferenca'] = round($caixa['total_conferido'] - $caixa['total_registrado'], 2);
-
-                // Buscar movimentações do caixa
-                $movimentacoes = $this->getMovimentacoesPorCaixa($caixa['id']);
-                $caixa['movimentacoes'] = $movimentacoes;
             }
 
             return $caixas;

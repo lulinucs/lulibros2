@@ -750,10 +750,12 @@ class Venda {
     // Calcular resumo financeiro
     private function calcularResumoFinanceiro($dataInicio = null, $dataFim = null, $tipoEstoque = null) {
         try {
+            // IMPORTANTE: Quando há filtro por tipo_estoque, somar apenas os itens filtrados (vi.total_item)
+            // não o total da venda (v.total_venda), pois uma venda pode ter itens de tipos diferentes
             $query = "SELECT 
                         COUNT(DISTINCT v.id) as total_vendas,
                         COUNT(vi.id) as total_itens,
-                        SUM(v.total_venda) as receita_total,
+                        SUM(vi.total_item) as receita_total,
                         SUM(vi.quantidade) as unidades_vendidas,
                         COUNT(DISTINCT vi.livro_id) as livros_diferentes
                      FROM vendas v
@@ -786,10 +788,12 @@ class Venda {
             $resumo = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // Buscar resumo por forma de pagamento
+            // IMPORTANTE: Somar apenas os itens que correspondem aos filtros (vi.total_item)
+            // não o total da venda (v.total_venda), pois uma venda pode ter itens de tipos diferentes
             $queryFormas = "SELECT 
                             v.forma_pagamento,
                             COUNT(DISTINCT v.id) as vendas,
-                            SUM(v.total_venda) as total
+                            SUM(vi.total_item) as total
                            FROM vendas v
                            JOIN venda_itens vi ON v.id = vi.venda_id
                            WHERE 1=1";
